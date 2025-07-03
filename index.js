@@ -4,7 +4,6 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/user.route.js';
 import preferenceRoutes from './routes/preferences.route.js';
 
-
 dotenv.config();
 
 const app = express();
@@ -14,18 +13,19 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/preferences', preferenceRoutes);
 
-mongoose.connect(process.env.user_connection).then(async () => {
-    console.log("Connected to the database");
-    try {
-        const db = mongoose.connection.db;
-        const collections = await db.listCollections().toArray();
-    } catch (error) {
-        console.error('Error: ', error);
-    } 
-}).catch((err)=>{
-    console.log('Error connecting to the database:', err);
-});
+const startServer = async () => {
+  try {
+    await mongoose.connect(process.env.user_connection);
+    console.log("✅ Connected to MongoDB");
 
-app.listen(3000, ()=>{
-    console.log('Server is running on port 3000');
-});
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+
+  } catch (err) {
+    console.error("❌ DB Connection Failed", err);
+    process.exit(1);
+  }
+};
+
+startServer();
