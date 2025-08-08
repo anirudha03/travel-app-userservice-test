@@ -10,6 +10,7 @@ const userSchema = new mongoose.Schema({
   followers: { type: Number, default: 0 },
   following: { type: Number, default: 0 },
   totalPosts: { type: Number, default: 0 },
+  totalTrips: { type: Number, default: 0 },
   profilePicUrl: { type: String, default: '' },
   preferences: [{ type: String }],
   password: { type: String, required: true },
